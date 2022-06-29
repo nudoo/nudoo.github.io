@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+   <meta charset="utf-8">
+   <title>geshin gacha sim</title>
+	<style>
+	html,body { width:100%; height:100%; }
+	#img_pool_div {
+		width:100%;
+		height:90%;
+		background:white;
+		display:flex;
+		align-items:center;
+		justify-content:center;
+	}
+	
+	
+	</style>
+      <script type="text/javascript">   
+		//var ws = new WebSocket("ws://localhost:9999");
+		var choice = 0;
+		var webs = new WebSocket("ws://localhost:9999");
+         function gacha_up1()
+         {      
+				var ws = new WebSocket("ws://localhost:9999");
+         		ws.onopen = function()
+               {
+                  ws.send("gacha_up1");
+               };
+			   ws.onmessage = function (evt)
+			   {
+					//document.getElementById("img1").src = 'data:image/jpg;base64,'+evt.data;
+					alert(evt.data);
+					return evt.data;
+			   };
+			   ws.close;
+         }
+		 function gacha_up2(){
+			var ws = new WebSocket("ws://localhost:9999");
+			ws.onopen = function(){
+				ws.send("gacha_up2");
+			};
+			ws.onmessage = function (evt){
+				//document.getElementById("img1").src = 'data:image/jpg;base64,'+evt.data;
+				alert(evt.data);
+				return evt.data;
+			};
+			ws.close;
+		 }
+			
+		function choose_up1(){
+			choice = 1;
+			document.getElementById("img_pool").src = 'background.png';
+		}
+		function choose_up2(){
+			choice = 2;
+			document.getElementById("img_pool").src = 'background_weapon.png';
+		}
+		
+		function gacha(name,callback){			
+            webs.send("gacha_up1");
+			webs.onmessage = function (evt)
+			   {
+					//document.getElementById("img1").src = 'data:image/jpg;base64,'+evt.data;
+					callback(evt.data);
+			   }; 
+			
+			//return data;
+			//callback(data);
+		}
+		function gacha_once(){
+			//var img_gacha = document.getElementById("img1");
+			//alert("test");
+			var img_data =  gacha("moea",function(data){
+				document.getElementById("img_pool").removeAttribute("hidden");
+				//document.getElementById("img0").src = 'data:image/jpg;base64,'+data;
+				document.getElementById("img_pool").src = 'data:image/jpg;base64,'+data;
+			});		
+			
+			//alert(document.getElementById("img1").src);
+			//var img_data = gacha(function(data){
+			//	document.getElementById("img1").src = 'data:image/jpg;base64,'+data;
+			//});	
+			//img_gacha.src = 'data:image/jpg;base64,' + data;
+			//document.getElementById("img1").src = 'data:image/jpg;base64,'+data;
+			//setTimeout(function(){},1000);
+		}
+		
+		/*function gacha_ten() {
+			for(let i=2;i<5;i++){
+				let img_data =  gacha("moea",function(data){
+					let imgId = "img" + temp;
+					alert(imgId);
+					document.getElementById(imgId).src = 'data:image/jpg;base64,'+data;
+				});	
+			}
+		}
+		
+		function gacha_ten(){
+			for(let i=2;i<5;I++){
+				(function(temp){
+				
+				})(i);
+			}
+		}*/
+		function setImg(id,data){
+			document.getElementById(id).src = 'data:image/jpg;base64,'+data;
+		}
+		function gacha_fun(id){			
+            webs.send("gacha_up1");
+			webs.onmessage = function (evt)
+			   {
+					document.getElementById(id).src = 'data:image/jpg;base64,'+evt.data;
+			   }; 
+		}
+		function gacha_ten() {
+			webs.send("gacha_up1_10");
+			webs.onmessage = function (evt)
+			   {	
+					console.log("type:"+typeof(evt.data));
+					var data = evt.data;
+					var arr = data.split("&&&")
+					console.log("arr.length:"+arr.length)
+					//document.getElementById("img0").hidden="hidden";
+					document.getElementById("img_pool").setAttribute("hidden",true);
+					document.getElementById("gacha_show_div").removeAttribute("hidden");
+					document.getElementById("img1").src = 'data:image/jpg;base64,'+arr[0];
+					document.getElementById("img2").src = 'data:image/jpg;base64,'+arr[1];
+					document.getElementById("img3").src = 'data:image/jpg;base64,'+arr[2];
+					document.getElementById("img4").src = 'data:image/jpg;base64,'+arr[3];
+					document.getElementById("img5").src = 'data:image/jpg;base64,'+arr[4];
+					document.getElementById("img6").src = 'data:image/jpg;base64,'+arr[5];
+					document.getElementById("img7").src = 'data:image/jpg;base64,'+arr[6];
+					document.getElementById("img8").src = 'data:image/jpg;base64,'+arr[7];
+					document.getElementById("img9").src = 'data:image/jpg;base64,'+arr[8];
+					document.getElementById("img10").src = 'data:image/jpg;base64,'+arr[9];
+			   }; 
+		}
+		
+		/*function gacha_ten() {
+			for(let i=2;i<5;i++){
+				(
+					function(temp,callback){
+						imgId = "img" + temp;
+						alert(imgId);
+						webs.send("gacha_up1");
+						callback(temp);						
+					}
+				)(i,webs.onmessage = function (evt){
+						alert("on:"+i);
+						id = "img" + i;
+						document.getElementById(id).src = 'data:image/jpg;base64,'+evt.data;
+					}
+				)			
+			}
+		}
+		
+		function gacha_ten() {
+			for(let i=2;i<5;i++){
+				(
+					function(temp,callback(id,function(id,data){
+						document.getElementById(id).src = 'data:image/jpg;base64,'+data;
+					})){
+						imgId = "img" + temp;
+						callback(imgId,call_callback);
+					}
+				)(i,gacha_fun)			
+			}
+		}
+		
+		function gacha_ten() {
+			for(let i=2;i<5;i++){
+				(function(temp){
+					alert(temp+":"+i);
+					gacha("moea",function(data){
+						let imgId = "img" + temp;
+						alert(imgId+":"+data);
+						document.getElementById(imgId).src = 'data:image/jpg;base64,'+data;
+					});					
+				})(i);			
+			}
+		}*/
+		/*function gacha_ten() {
+			for(var i=2;i<5;i++){
+				(function(temp,function(){
+					var imgId = "img" + temp;
+					var img_data =  gacha("moea",function(data){
+						alert(imgId+":"+data);
+						document.getElementById(imgId).src = 'data:image/jpg;base64,'+data;
+					});
+				}){
+									
+				})(i);	
+			}
+		}*/
+		
+		/*function gacha_ten(){
+			for(i=0;i<10;i++){
+				gacha_once();
+				//setTimeout() 直接写1000只会在第一次等待1秒
+				//setTimeout(gacha_once(),(i+1)*1000);				
+			}
+		}
+		function gacha_ten(){
+			for(i=0;i<10;i++){
+				(function(t){
+					setTimeout(gacha_once(),1000*t)
+				})(i)
+			}
+		}*/
+      </script>
+        
+   </head>
+   <body>
+	<div>
+	  <div id="choose_div">
+		 <a href="javascript:choose_up1()">up1</a>
+		 <a href="javascript:choose_up2()">up2</a>
+	  </div>
+      <!--<div id="img_pool" style="background-image:url('./demo/img/3.jpg')">         -->
+		 <!--<img id="img_pool" src="./demo/img/3.jpg" width="50%" height="auto"></img>
+		<div id="img_pool" style="width:1680px; height:960px; background:url('./demo/img/1.jpg');">-->
+		<div id="img_pool_div">
+		<img id="img_pool" src="background.png"></img>
+		<div id="gacha_show_div" hidden="hidden"> 
+		 <!--<img id="img0" src="" width="100%" height="80%"></img>-->
+		 <img id="img1" src="" width="10%" height="auto"></img>
+		 <img id="img2" src="" width="10%" height="auto"></img>
+		 <img id="img3" src="" width="10%" height="auto"></img>
+		 <img id="img4" src="" width="10%" height="auto"></img>
+		 <img id="img5" src="" width="10%" height="auto"></img>
+		 <img id="img6" src="" width="10%" height="auto"></img>
+		 <img id="img7" src="" width="10%" height="auto"></img>
+		 <img id="img8" src="" width="10%" height="auto"></img>
+		 <img id="img9" src="" width="10%" height="auto"></img>
+		 <img id="img10" src="" width="10%" height="auto"></img>		 
+		</div>
+      </div>
+	  
+	  <div id="gacha_div">
+		 <!--<a href="javascript:gacha_once()">once</a>
+		 <a href="javascript:gacha_ten()">ten</a>-->
+		<button name="gacha1" type="submit" value="test_value1" onclick="javascript:gacha_once()">once</button>
+		<button name="gacha10" type="submit" value="test_value10" onclick="javascript:gacha_ten()">ten</button>
+	  </div>
+    </div>  
+   </body>
+</html>
