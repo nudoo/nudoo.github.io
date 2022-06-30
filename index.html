@@ -43,7 +43,7 @@
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
-
+<link href="mywebapps/mychatbox.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -607,6 +607,28 @@
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
+  window.onload = function() {
+		// choice = 0;
+		//var webs = new WebSocket("ws://localhost:9999");
+		
+		var Words = document.getElementById("words");
+		var TalkWords = document.getElementById("talkwords");
+		var TalkSub = document.getElementById("talksub");
+		TalkSub.onclick = function() {
+			str = '<div class="atalk"><span>' + TalkWords.value + '</span></div>';					
+			Words.innerHTML = Words.innerHTML + str;
+			
+			var evt.data="我现在有事不在";
+			response = '<div class="btalk"><span>' + evt.data + '</span></div>';
+			Words.innerHTML = Words.innerHTML + response;
+			/*webs.send(TalkWords.value);
+			webs.onmessage = function(evt){
+				console.log(evt);
+				response = '<div class="btalk"><span>' + evt.data + '</span></div>';
+				Words.innerHTML = Words.innerHTML + response;
+			}*/
+		}
+	}
 </script>
 
 
