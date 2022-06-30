@@ -45,7 +45,7 @@
 
 
 
-
+<link href="mywebapps/mychatbox.css" rel="stylesheet" type="text/css" />
 
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
@@ -138,7 +138,15 @@
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  
+	<div class="talk_con">
+		<table class="talk_show" id="words">
+		</table>
+		<!--<div class="talk_show" id="words"></div>-->
+		<div class="talk_input">
+			<input type="text" class="talk_word" id="talkwords">
+			<input type="button" value="发送" class="talk_sub" id="talksub">
+		</div>
+	</div>
   
     
   
@@ -394,6 +402,28 @@
   if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
     window.Promise = null;
   }
+  window.onload = function() {
+		// choice = 0;
+		//var webs = new WebSocket("ws://localhost:9999");
+		
+		var Words = document.getElementById("words");
+		var TalkWords = document.getElementById("talkwords");
+		var TalkSub = document.getElementById("talksub");
+		TalkSub.onclick = function() {
+			str = '<div class="atalk"><span>' + TalkWords.value + '</span></div>';					
+			Words.innerHTML = Words.innerHTML + str;
+			
+			var evt.data="我现在有事不在";
+			response = '<div class="btalk"><span>' + evt.data + '</span></div>';
+			Words.innerHTML = Words.innerHTML + response;
+			/*webs.send(TalkWords.value);
+			webs.onmessage = function(evt){
+				console.log(evt);
+				response = '<div class="btalk"><span>' + evt.data + '</span></div>';
+				Words.innerHTML = Words.innerHTML + response;
+			}*/
+		}
+	}
 </script>
 
 
