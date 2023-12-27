@@ -17,8 +17,8 @@
       name="keywords"
       content="moea的主页,canvas,3D,perspective,texturing,gallery"
     />
-    <link rel="stylesheet" href="home/css/slider-wb.css"/>
-	<link rel="stylesheet" href="home/css/style.css">
+    <link rel="stylesheet" href="css/slider-wb.css"/>
+	<link rel="stylesheet" href="css/style.css">
     <title>moea的主页</title>
     <style>
       html {
@@ -43,8 +43,8 @@
         background: #d2f7f3;
       }
     </style>
-    <script type="text/javascript" src="home/res/ge1doot.js"></script>
-    <script type="text/javascript" src="home/res/harris.js"></script>
+    <script type="text/javascript" src="res/ge1doot.js"></script>
+    <script type="text/javascript" src="res/harris.js"></script>
     <script type="text/javascript">
       /*
        * ==============================================================
@@ -293,7 +293,7 @@
             window.addEventListener(
               "load",
               function () {
-                ge1doot.loadJS("home/res/imageTransform3D.js", init, data);
+                ge1doot.loadJS("res/imageTransform3D.js", init, data);
               },
               false
             );
@@ -302,21 +302,21 @@
       })().load({
         imgdata: [
           // north
-          { img: "home/imgs/1.jpg", x: -1000, y: 0, z: 1500, nx: 0, nz: 1 },
-          { img: "home/imgs/2.jpg", x: 0, y: 0, z: 1500, nx: 0, nz: 1 },
-          { img: "home/imgs/3.jpg", x: 1000, y: 0, z: 1500, nx: 0, nz: 1 },
+          { img: "imgs/1.jpg", x: -1000, y: 0, z: 1500, nx: 0, nz: 1 },
+          { img: "imgs/2.jpg", x: 0, y: 0, z: 1500, nx: 0, nz: 1 },
+          { img: "imgs/3.jpg", x: 1000, y: 0, z: 1500, nx: 0, nz: 1 },
           // east
-          { img: "home/imgs/4.jpg", x: 1500, y: 0, z: 1000, nx: -1, nz: 0 },
-          { img: "home/imgs/5.jpg", x: 1500, y: 0, z: 0, nx: -1, nz: 0 },
-          { img: "home/imgs/6.jpg", x: 1500, y: 0, z: -1000, nx: -1, nz: 0 },
+          { img: "imgs/4.jpg", x: 1500, y: 0, z: 1000, nx: -1, nz: 0 },
+          { img: "imgs/5.jpg", x: 1500, y: 0, z: 0, nx: -1, nz: 0 },
+          { img: "imgs/6.jpg", x: 1500, y: 0, z: -1000, nx: -1, nz: 0 },
           // south（注意更改后缀）
-          { img: "home/imgs/7.JPG", x: 1000, y: 0, z: -1500, nx: 0, nz: -1 },
-          { img: "home/imgs/8.JPG", x: 0, y: 0, z: -1500, nx: 0, nz: -1 },
-          { img: "home/imgs/9.jpg", x: -1000, y: 0, z: -1500, nx: 0, nz: -1 },
+          { img: "imgs/7.JPG", x: 1000, y: 0, z: -1500, nx: 0, nz: -1 },
+          { img: "imgs/8.JPG", x: 0, y: 0, z: -1500, nx: 0, nz: -1 },
+          { img: "imgs/9.jpg", x: -1000, y: 0, z: -1500, nx: 0, nz: -1 },
           // west（注意更改后缀）
-          { img: "home/imgs/10.JPG", x: -1500, y: 0, z: -1000, nx: 1, nz: 0 },
-          { img: "home/imgs/11.JPG", x: -1500, y: 0, z: 0, nx: 1, nz: 0 },
-          { img: "home/imgs/12.JPG", x: -1500, y: 0, z: 1000, nx: 1, nz: 0 },
+          { img: "imgs/10.JPG", x: -1500, y: 0, z: -1000, nx: 1, nz: 0 },
+          { img: "imgs/11.JPG", x: -1500, y: 0, z: 0, nx: 1, nz: 0 },
+          { img: "imgs/12.JPG", x: -1500, y: 0, z: 1000, nx: 1, nz: 0 },
         ],
         structure: [
           {
@@ -430,7 +430,7 @@
 	<ul>
 		<li><a href="#">首页</a></li>
 		<li><a href="#">关于</a></li>
-		<li><a href="blog/index.html">blog</a></li>
+		<li><a href="#">blog</a></li>
 		<li><a href="#">团队</a></li>
 		<li><a href="#">文件下载</a></li>
 		<li><a href="https://space.bilibili.com/32683063">联系我们</a></li>
