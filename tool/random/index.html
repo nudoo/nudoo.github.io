@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机图片跳转</title>
+</head>
+<body>
+    <script>
+        // 定义图片 URL 列表，类似于 PHP 版本中的 images.txt 文件
+        const imageUrls = [
+            'imgs/117627735_p1.jpg',
+            'imgs/122156399_p0.jpg',
+            'imgs/122688417_p1.jpg',
+            // 你可以根据需要添加更多图片URL
+        ];
+
+        // 随机选择一个图片URL
+        const randomIndex = Math.floor(Math.random() * imageUrls.length);
+        const randomImageUrl = imageUrls[randomIndex];
+
+        // 跳转到随机选择的图片URL
+        window.location.href = randomImageUrl;
+    </script>
+</body>
+</html>

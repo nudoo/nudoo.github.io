@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进制转换工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-start min-h-screen bg-gray-100 text-center">
+    <!-- 回到首页链接 -->
+    <a href="/" class="absolute top-4 left-4 text-blue-600 hover:underline text-lg">回到首页</a>
+    
+    <h1 class="text-3xl font-semibold my-8">进制转换工具</h1>
+    
+    <div class="container max-w-md p-6 bg-white rounded-lg shadow-md">
+        <div class="space-y-6">
+            <div>
+                <label for="inputBase" class="block mb-2 text-lg font-medium">输入进制</label>
+                <select id="inputBase" class="w-full p-3 border border-gray-300 rounded-md">
+                    <option value="2">二进制</option>
+                    <option value="8">八进制</option>
+                    <option value="10">十进制</option>
+                    <option value="16">十六进制</option>
+                </select>
+            </div>
+
+            <div>
+                <input type="text" id="inputNumber" class="w-full p-3 border border-gray-300 rounded-md" placeholder="请输入数字" required>
+                <p id="inputError" class="error mt-2 hidden">请输入有效的数字</p>
+            </div>
+
+            <div>
+                <label for="outputBase" class="block mb-2 text-lg font-medium">输出进制</label>
+                <select id="outputBase" class="w-full p-3 border border-gray-300 rounded-md">
+                    <option value="2">二进制</option>
+                    <option value="8">八进制</option>
+                    <option value="10" selected>十进制</option>
+                    <option value="16">十六进制</option>
+                </select>
+            </div>
+
+            <input type="text" id="outputNumber" class="w-full p-3 border border-gray-300 rounded-md" placeholder="转换结果" readonly>
+
+            <button onclick="convert()" id="convertBtn" class="py-3 px-6 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">转换</button>
+        </div>
+    </div>
+
+    <script>
+        // 监听输入框变化，实时检查并启用/禁用按钮
+        document.getElementById('inputNumber').addEventListener('input', function() {
+            validateAndToggleButton();
+        });
+
+        function validateAndToggleButton() {
+            const inputBase = document.getElementById('inputBase').value;
+            const inputNumber = document.getElementById('inputNumber').value.trim();
+            const inputError = document.getElementById('inputError');
+            const convertBtn = document.getElementById('convertBtn');
+
+            // 验证输入是否合法
+            if (validateInput(inputNumber, inputBase)) {
+                inputError.classList.add('hidden');
+                convertBtn.disabled = false; // 输入有效，启用按钮
+            } else {
+                inputError.textContent = `请输入有效的${inputBase}进制数字`;
+                inputError.classList.remove('hidden');
+                convertBtn.disabled = true;  // 输入无效，禁用按钮
+            }
+        }
+
+        function validateInput(input, base) {
+            const regex = {
+                2: /^[01]+$/,
+                8: /^[0-7]+$/,
+                10: /^[0-9]+$/,
+                16: /^[0-9a-fA-F]+$/
+            };
+            return regex[base].test(input);
+        }
+
+        function convert() {
+            const inputBase = document.getElementById('inputBase').value;
+            const outputBase = document.getElementById('outputBase').value;
+            const inputNumber = document.getElementById('inputNumber').value.trim();
+            const inputError = document.getElementById('inputError');
+
+            // 重置错误状态
+            inputError.classList.add('hidden');
+            document.getElementById('convertBtn').disabled = false;
+
+            // 验证输入是否合法
+            if (!validateInput(inputNumber, inputBase)) {
+                inputError.textContent = `请输入有效的${inputBase}进制数字`;
+                inputError.classList.remove('hidden');
+                return;
+            }
+
+            let decimalNumber;
+            try {
+                // 将输入转换为十进制
+                decimalNumber = parseInt(inputNumber, inputBase);
+                if (isNaN(decimalNumber)) throw new Error('无效输入');
+            } catch (error) {
+                inputError.textContent = '转换失败，请检查输入';
+                inputError.classList.remove('hidden');
+                return;
+            }
+
+            // 将十进制转换为输出基数
+            let outputNumber;
+            try {
+                outputNumber = decimalNumber.toString(outputBase);
+                if (outputBase == '16') outputNumber = outputNumber.toUpperCase();
+            } catch (error) {
+                inputError.textContent = '无法转换为指定输出基数';
+                inputError.classList.remove('hidden');
+                return;
+            }
+
+            // 显示结果
+            document.getElementById('outputNumber').value = outputNumber;
+        }
+    </script>
+</body>
+</html>

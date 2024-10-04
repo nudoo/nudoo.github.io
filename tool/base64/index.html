@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片Base64编码转换工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-start min-h-screen bg-gray-100 text-center">
+    <!-- 回到首页链接 -->
+    <a href="/" class="absolute top-4 left-4 text-blue-600 hover:underline text-lg">回到首页</a>
+
+    <h1 class="text-3xl font-semibold my-8">图片Base64编码转换工具</h1>
+
+    <div class="container max-w-md p-6 bg-white rounded-lg shadow-md">
+        <div class="space-y-6">
+            <!-- 图片选择并转换为Base64 -->
+            <div>
+                <label for="imageInput" class="block mb-2 text-lg font-medium">选择或粘贴图片</label>
+                <input type="file" id="imageInput" accept="image/*" class="w-full p-3 border border-gray-300 rounded-md">
+                <textarea id="base64Output" class="w-full p-3 mt-4 border border-gray-300 rounded-md" placeholder="Base64编码将在这里显示..."></textarea>
+            </div>
+
+            <!-- Base64转换为图片 -->
+            <div>
+                <label for="base64Input" class="block mb-2 text-lg font-medium">将Base64编码转换为图片</label>
+                <textarea id="base64Input" class="w-full p-3 border border-gray-300 rounded-md" placeholder="粘贴Base64编码..."></textarea>
+                <button id="convertToImage" class="mt-4 py-3 px-6 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">转换为图片</button>
+                <div class="mt-4">
+                    <img id="resultImage" alt="结果图片将显示在这里" class="max-w-full border border-gray-300 rounded-md">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 将图片转换为Base64编码
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64String = e.target.result;
+                    document.getElementById('base64Output').value = base64String;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 支持粘贴图片并转换为Base64编码
+        document.addEventListener('paste', function(event) {
+            const items = event.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const file = items[i].getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const base64String = e.target.result;
+                        document.getElementById('base64Output').value = base64String;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        // 将Base64编码转换为图片
+        document.getElementById('convertToImage').addEventListener('click', function() {
+            const base64String = document.getElementById('base64Input').value;
+            if (base64String) {
+                document.getElementById('resultImage').src = base64String;
+            } else {
+                alert('请粘贴有效的Base64编码');
+            }
+        });
+    </script>
+</body>
+</html>

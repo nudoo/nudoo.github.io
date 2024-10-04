@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间戳转换工具</title>
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <style>
+        .error {
+            color: red;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-start min-h-screen bg-gray-100 text-center">
+	<!-- 回到首页链接 -->
+    <a href="/" class="absolute top-4 left-4 text-blue-600 hover:underline text-lg">回到首页</a>
+	
+    <h1 class="text-3xl font-semibold my-8">时间戳转换工具</h1>
+
+    <div class="container max-w-md p-6 bg-white rounded-lg shadow-md">
+        <div class="space-y-6">
+            <!-- 时间戳转换为日期 -->
+            <div>
+                <label for="timestamp" class="block mb-2 text-lg font-medium">时间戳转换为日期</label>
+                <input type="text" id="timestamp" class="w-full p-3 border border-gray-300 rounded-md" placeholder="请输入时间戳" required>
+                <p id="timestampError" class="error mt-2 hidden">请输入有效的时间戳</p>
+                <button onclick="convertTimestamp()" class="mt-4 py-3 px-6 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">转换</button>
+                <div id="convertedDate" class="p-3 border border-gray-300 rounded-md mt-4"></div>
+            </div>
+
+            <!-- 日期转换为时间戳 -->
+            <div>
+                <label for="dateInput" class="block mb-2 text-lg font-medium">日期转换为时间戳</label>
+                <input type="datetime-local" id="dateInput" class="w-full p-3 border border-gray-300 rounded-md" required>
+                <p id="dateError" class="error mt-2 hidden">请输入有效的日期</p>
+                <button onclick="convertDateToTimestamp()" class="mt-4 py-3 px-6 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400">转换</button>
+                <div id="convertedTimestamp" class="p-3 border border-gray-300 rounded-md mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function convertTimestamp() {
+            const timestamp = document.getElementById('timestamp').value.trim();
+            const convertedDate = document.getElementById('convertedDate');
+            const timestampError = document.getElementById('timestampError');
+
+            // 清空之前的错误提示
+            timestampError.classList.add('hidden');
+            convertedDate.textContent = '';
+
+            // 验证输入是否为有效的时间戳
+            if (!timestamp || isNaN(timestamp)) {
+                timestampError.textContent = "请输入有效的时间戳";
+                timestampError.classList.remove('hidden');
+                return;
+            }
+
+            // 将时间戳转换为日期
+            const date = new Date(parseInt(timestamp) * 1000); // JavaScript 中 Date 接收毫秒
+
+            if (isNaN(date.getTime())) {
+                timestampError.textContent = "无效的时间戳";
+                timestampError.classList.remove('hidden');
+                return;
+            }
+
+            // 显示转换后的日期
+            convertedDate.textContent = date.toLocaleString();
+        }
+
+        function convertDateToTimestamp() {
+            const dateInput = document.getElementById('dateInput').value;
+            const convertedTimestamp = document.getElementById('convertedTimestamp');
+            const dateError = document.getElementById('dateError');
+
+            // 清空之前的错误提示
+            dateError.classList.add('hidden');
+            convertedTimestamp.textContent = '';
+
+            if (!dateInput) {
+                dateError.textContent = "请输入有效的日期";
+                dateError.classList.remove('hidden');
+                return;
+            }
+
+            // 将输入的日期转换为时间戳
+            const date = new Date(dateInput);
+
+            if (isNaN(date.getTime())) {
+                dateError.textContent = "无效的日期";
+                dateError.classList.remove('hidden');
+                return;
+            }
+
+            // 获取 Unix 时间戳 (秒级)
+            const timestamp = Math.floor(date.getTime() / 1000);
+            convertedTimestamp.textContent = `时间戳：${timestamp}`;
+        }
+    </script>
+</body>
+</html>
