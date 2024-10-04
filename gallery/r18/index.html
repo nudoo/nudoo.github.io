@@ -33,7 +33,7 @@
         padding: 0px;
         background: #fff;
         width: 100%;
-        height: 100%;
+        height: 100vh;
       }
 
       #canvas {
@@ -302,21 +302,22 @@
       })().load({
         imgdata: [
           // north
-          { img: "imgs/1.jpg", x: -1000, y: 0, z: 1500, nx: 0, nz: 1 },
-          { img: "imgs/2.jpg", x: 0, y: 0, z: 1500, nx: 0, nz: 1 },
-          { img: "imgs/3.jpg", x: 1000, y: 0, z: 1500, nx: 0, nz: 1 },
+          { img: "imgs/1.jpg", x: -1000, y: 0, z: 4000, nx: 0, nz: 1 },
+          { img: "imgs/2.jpg", x: -1500, y: 0, z: 2000, nx: 0, nz: 1 },
+          { img: "imgs/3.jpg", x: 1000, y: 0, z: 2000, nx: 0, nz: 1 },
           // east
-          { img: "imgs/4.jpg", x: 1500, y: 0, z: 1000, nx: -1, nz: 0 },
-          { img: "imgs/5.jpg", x: 1500, y: 0, z: 0, nx: -1, nz: 0 },
-          { img: "imgs/6.jpg", x: 1500, y: 0, z: -1000, nx: -1, nz: 0 },
+          { img: "imgs/4.jpg", x: 4000, y: 0, z: 1000, nx: -1, nz: 0 },
+          { img: "imgs/5.jpg", x: 2500, y: 0, z: 1500, nx: -1, nz: 0 },
+          { img: "imgs/6.jpg", x: 3000, y: 0, z: -800, nx: -1, nz: 0 },
           // south（注意更改后缀）
-          { img: "imgs/7.jpg", x: 1000, y: 0, z: -1500, nx: 0, nz: -1 },
-          { img: "imgs/8.jpg", x: 0, y: 0, z: -1500, nx: 0, nz: -1 },
-          { img: "imgs/9.jpg", x: -1000, y: 0, z: -1500, nx: 0, nz: -1 },
+          { img: "imgs/9.JPG", x: 2000, y: 0, z: -3500, nx: 0, nz: -1 },
+          { img: "imgs/8.JPG", x: 2000, y: 0, z: -2000, nx: 0, nz: -1 },
+          { img: "imgs/7.jpg", x: -100, y: 0, z: -1500, nx: 0, nz: -1 },
           // west（注意更改后缀）
-          { img: "imgs/10.jpg", x: -1500, y: 0, z: -1000, nx: 1, nz: 0 },
-          { img: "imgs/11.jpg", x: -1500, y: 0, z: 0, nx: 1, nz: 0 },
-          { img: "imgs/12.jpg", x: -1500, y: 0, z: 1000, nx: 1, nz: 0 },
+		  { img: "imgs/12.JPG", x: -4000, y: 0, z: -1000, nx: 1, nz: 0 },
+          { img: "imgs/10.JPG", x: -2000, y: 0, z: -2000, nx: 1, nz: 0 },
+          { img: "imgs/11.JPG", x: -2000, y: 0, z: 500, nx: 1, nz: 0 },
+          
         ],
         structure: [
           {
