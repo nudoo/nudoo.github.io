@@ -1,21 +1,77 @@
 <!DOCTYPE html>
-<html lang="Zh-CN">
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <title>21-Clock</title>
-  <!-- Link CSS -->
-  <link rel="stylesheet" href="css/flipclock.css">
-  <link rel="stylesheet" href="css/style.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>21-Clock</title>
+	<!-- Link CSS -->
+	<link rel="stylesheet" href="css/flipclock.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	<style>
+		:root{--accent1:rgba(124,58,237,0.95);--accent2:rgba(14,165,233,0.85);}
+		html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;background:linear-gradient(120deg,#071025 0%,#081229 35%,#061223 100%);}
+		body{display:flex;align-items:center;justify-content:center;overflow:hidden}
+
+		/* animated subtle gradient overlay */
+		.scene{position:relative;width:100%;height:100vh;display:flex;align-items:center;justify-content:center}
+		.bg-blur{position:absolute;inset:-20%;background:radial-gradient(circle at 10% 20%, rgba(124,58,237,0.18), transparent 12%), radial-gradient(circle at 85% 80%, rgba(14,165,233,0.12), transparent 18%);filter:blur(80px);mix-blend-mode:screen;pointer-events:none}
+
+		/* floating particle layer */
+		.particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+		.particles span{position:absolute;bottom:-12vh;border-radius:50%;opacity:.6;filter:blur(0.8px);box-shadow:0 8px 30px rgba(0,0,0,0.2);transform:translateY(0) scale(0.8);animation-name:floatUp;animation-timing-function:linear;}
+		@keyframes floatUp{0%{transform:translateY(0) scale(0.6);opacity:0}10%{opacity:0.9}100%{transform:translateY(-130vh) scale(1.2);opacity:0}}
+
+		/* clock container styling */
+		.clock-wrapper{position:relative;z-index:5;padding:20px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));backdrop-filter:blur(6px);box-shadow:0 12px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);}
+		/* add glow to flipclock elements */
+		.clock .flip-clock-wrapper{filter:drop-shadow(0 8px 40px rgba(124,58,237,0.15));}
+
+		/* responsive sizing */
+		@media (max-width:520px){.clock-wrapper{padding:12px;border-radius:10px}}
+	</style>
 </head>
 <body>
-	<div class="clock"></div>
+
+	<div class="scene">
+		<div class="bg-blur" aria-hidden="true"></div>
+		<div class="particles" id="particles" aria-hidden="true"></div>
+
+		<div class="clock-wrapper">
+			<div class="clock"></div>
+		</div>
+	</div>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="js/flipclock.js"></script>
-	<script type="text/javascript">
-		var clock = $('.clock').FlipClock({
-			clockFace: 'TwelveHourClock'
+
+	<script>
+		// generate floating particles dynamically
+		document.addEventListener('DOMContentLoaded', function(){
+			const container = document.getElementById('particles');
+			if(!container) return;
+			const colors = ['rgba(124,58,237,0.45)','rgba(14,165,233,0.32)','rgba(99,102,241,0.22)','rgba(16,185,129,0.18)'];
+			const count = 20;
+			for(let i=0;i<count;i++){
+				const el = document.createElement('span');
+				const size = Math.round(6 + Math.random() * 36);
+				el.style.width = el.style.height = size + 'px';
+				el.style.left = (Math.random() * 100) + '%';
+				el.style.background = colors[Math.floor(Math.random()*colors.length)];
+				el.style.animationDuration = (8 + Math.random() * 18) + 's';
+				el.style.animationDelay = (-Math.random() * 10) + 's';
+				el.style.opacity = (0.2 + Math.random() * 0.8).toFixed(2);
+				container.appendChild(el);
+			}
+		});
+
+		// initialize FlipClock after DOM ready
+		document.addEventListener('DOMContentLoaded', function(){
+			var clock = $('.clock').FlipClock({
+				clockFace: 'TwelveHourClock'
+			});
 		});
 	</script>
+
 </body>
 </html>
