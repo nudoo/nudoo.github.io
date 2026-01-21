@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任意门 - 随机网站跳转</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+            color: #fff;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .door-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 0 auto 40px;
+            perspective: 1000px;
+        }
+        
+        .door-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #8d6e63 0%, #5d4037 100%);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        
+        .door {
+            position: absolute;
+            width: 48%;
+            height: 95%;
+            top: 2.5%;
+            background: linear-gradient(to right, #d7ccc8 0%, #bcaaa4 100%);
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transform-origin: left;
+            z-index: 2;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .door.left {
+            left: 2%;
+        }
+        
+        .door.right {
+            right: 2%;
+            transform-origin: right;
+        }
+        
+        .door:hover {
+            background: linear-gradient(to right, #efebe9 0%, #d7ccc8 100%);
+        }
+        
+        .door-knob {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ffd700 30%, #ffab00 100%);
+            border-radius: 50%;
+            top: 50%;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+        
+        .door.left .door-knob {
+            right: 15px;
+        }
+        
+        .door.right .door-knob {
+            left: 15px;
+        }
+        
+        .door-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 2px, transparent 3px),
+                radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1) 2px, transparent 3px);
+            background-size: 50px 50px;
+        }
+        
+        .door-glowing-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .door:hover .door-glowing-effect {
+            opacity: 1;
+        }
+        
+        .light-beam {
+            position: absolute;
+            width: 0;
+            height: 100%;
+            top: 0;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+            z-index: 3;
+            opacity: 0;
+        }
+        
+        .open .light-beam {
+            animation: beam 1.2s ease-out forwards;
+        }
+        
+        @keyframes beam {
+            0% {
+                width: 0;
+                left: 50%;
+                opacity: 0;
+            }
+            50% {
+                width: 100%;
+                left: 0;
+                opacity: 0.7;
+            }
+            100% {
+                width: 0;
+                left: 50%;
+                opacity: 0;
+            }
+        }
+        
+        .open .door.left {
+            transform: rotateY(-110deg);
+        }
+        
+        .open .door.right {
+            transform: rotateY(110deg);
+        }
+        
+        .click-instruction {
+            font-size: 1.3rem;
+            margin: 20px 0 40px;
+            color: #ffeb3b;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 235, 59, 0.5);
+        }
+        
+        .destination-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .destination-info:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .destination-info h3 {
+            color: #ffeb3b;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .destination-info p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        .sites-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .site-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .site-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .counter {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #ffeb3b;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-align: center;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .door-container {
+                width: 250px;
+                height: 350px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .sites-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .door-container {
+                width: 200px;
+                height: 300px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .sites-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-door-open"></i> 任意门</h1>
+            <p class="subtitle">点击门扉，随机跳转到精彩网站，开启未知之旅！</p>
+        </div>
+        
+        <div class="door-container" id="doorContainer">
+            <div class="door-frame"></div>
+            <div class="door left" id="leftDoor">
+                <div class="door-pattern"></div>
+                <div class="door-glowing-effect"></div>
+                <div class="door-knob"></div>
+            </div>
+            <div class="door right" id="rightDoor">
+                <div class="door-pattern"></div>
+                <div class="door-glowing-effect"></div>
+                <div class="door-knob"></div>
+            </div>
+            <div class="light-beam" id="lightBeam"></div>
+        </div>
+        
+        <p class="click-instruction">点击任意门开始旅程 →</p>
+        
+        <div class="destination-info">
+            <h3><i class="fas fa-info-circle"></i> 即将前往...</h3>
+            <p id="destinationText">点击任意门后，将随机选择一个网站跳转。所有网站均为精选的高质量站点，涵盖知识、工具、娱乐等多个领域。</p>
+        </div>
+        
+        <div class="sites-list" id="sitesList">
+            <!-- 网站列表将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="counter">
+            <p>已预设 <span id="siteCount">0</span> 个网站</p>
+            <p>今日已使用 <span id="usageCount">0</span> 次</p>
+        </div>
+        
+        <div class="footer">
+            <p>灵感来源于《哆啦A梦》 | 仅供娱乐使用 | 点击即表示同意随机跳转</p>
+            <p>注意：所有网站均为第三方站点，请自行注意网络安全</p>
+        </div>
+    </div>
+
+    <script>
+        // 预设网站列表
+        const websites = [
+            { name: "维基百科", url: "https://www.wikipedia.org", category: "知识", description: "全球最大的自由百科全书" },
+            { name: "MDN Web Docs", url: "https://developer.mozilla.org", category: "开发", description: "Web开发技术文档" },
+            { name: "GitHub", url: "https://github.com", category: "开发", description: "全球最大的代码托管平台" },
+            { name: "Coursera", url: "https://www.coursera.org", category: "学习", description: "世界顶尖大学在线课程" },
+            { name: "TED", url: "https://www.ted.com", category: "知识", description: "思想传播与演讲平台" },
+            { name: "Khan Academy", url: "https://www.khanacademy.org", category: "学习", description: "免费在线学习平台" },
+            { name: "NASA", url: "https://www.nasa.gov", category: "科学", description: "美国国家航空航天局" },
+            { name: "Google Arts & Culture", url: "https://artsandculture.google.com", category: "文化", description: "探索全球艺术与文化" },
+            { name: "Duolingo", url: "https://www.duolingo.com", category: "学习", description: "免费语言学习平台" },
+            { name: "Spotify", url: "https://open.spotify.com", category: "娱乐", description: "音乐流媒体服务平台" },
+            { name: "YouTube", url: "https://www.youtube.com", category: "娱乐", description: "全球最大视频分享平台" },
+            { name: "BBC News", url: "https://www.bbc.com/news", category: "新闻", description: "BBC新闻国际版" },
+            { name: "Google Earth", url: "https://earth.google.com", category: "地理", description: "探索地球的3D地图" },
+            { name: "国家地理", url: "https://www.nationalgeographic.com", category: "科学", description: "国家地理杂志官方网站" },
+            { name: "Stack Overflow", url: "https://stackoverflow.com", category: "开发", description: "程序员问答社区" },
+            { name: "Codecademy", url: "https://www.codecademy.com", category: "学习", description: "互动式编程学习平台" }
+        ];
+        
+        // DOM元素
+        const doorContainer = document.getElementById('doorContainer');
+        const leftDoor = document.getElementById('leftDoor');
+        const rightDoor = document.getElementById('rightDoor');
+        const lightBeam = document.getElementById('lightBeam');
+        const destinationText = document.getElementById('destinationText');
+        const sitesList = document.getElementById('sitesList');
+        const siteCount = document.getElementById('siteCount');
+        const usageCount = document.getElementById('usageCount');
+        
+        // 初始化
+        let isOpening = false;
+        let usageCounter = localStorage.getItem('doorUsageCount') || 0;
+        
+        // 更新使用次数
+        usageCount.textContent = usageCounter;
+        
+        // 更新网站数量
+        siteCount.textContent = websites.length;
+        
+        // 生成网站列表
+        function generateSitesList() {
+            sitesList.innerHTML = '';
+            websites.forEach(site => {
+                const siteItem = document.createElement('div');
+                siteItem.className = 'site-item';
+                siteItem.innerHTML = `
+                    <strong>${site.name}</strong><br>
+                    <small>${site.category} · ${site.description}</small>
+                `;
+                siteItem.addEventListener('click', () => {
+                    // 直接跳转到指定网站
+                    window.open(site.url, '_blank');
+                });
+                sitesList.appendChild(siteItem);
+            });
+        }
+        
+        // 随机选择网站
+        function getRandomWebsite() {
+            const randomIndex = Math.floor(Math.random() * websites.length);
+            return websites[randomIndex];
+        }
+        
+        // 开门动画
+        function openDoor() {
+            if (isOpening) return;
+            
+            isOpening = true;
+            
+            // 随机选择一个网站
+            const randomSite = getRandomWebsite();
+            
+            // 更新目的地信息
+            destinationText.innerHTML = `
+                <strong>${randomSite.name}</strong> - ${randomSite.description}<br>
+                <small>即将在3秒后跳转到: ${randomSite.url}</small>
+            `;
+            
+            // 添加开门类
+            doorContainer.classList.add('open');
+            lightBeam.style.animation = 'none';
+            setTimeout(() => {
+                lightBeam.style.animation = '';
+            }, 10);
+            
+            // 增加使用计数
+            usageCounter++;
+            usageCount.textContent = usageCounter;
+            localStorage.setItem('doorUsageCount', usageCounter);
+            
+            // 3秒后跳转
+            setTimeout(() => {
+                window.open(randomSite.url, '_blank');
+                
+                // 关闭门
+                setTimeout(() => {
+                    doorContainer.classList.remove('open');
+                    isOpening = false;
+                    
+                    // 重置目的地文本
+                    setTimeout(() => {
+                        destinationText.textContent = '点击任意门后，将随机选择一个网站跳转。所有网站均为精选的高质量站点，涵盖知识、工具、娱乐等多个领域。';
+                    }, 500);
+                }, 1000);
+            }, 3000);
+        }
+        
+        // 添加点击事件
+        doorContainer.addEventListener('click', openDoor);
+        
+        // 添加键盘事件（按空格键也可以开门）
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !isOpening) {
+                openDoor();
+            }
+        });
+        
+        // 初始化网站列表
+        generateSitesList();
+        
+        // 添加一个有趣的悬浮效果
+        doorContainer.addEventListener('mouseenter', () => {
+            if (!isOpening) {
+                leftDoor.style.transform = 'rotateY(-5deg)';
+                rightDoor.style.transform = 'rotateY(5deg)';
+            }
+        });
+        
+        doorContainer.addEventListener('mouseleave', () => {
+            if (!isOpening) {
+                leftDoor.style.transform = 'rotateY(0)';
+                rightDoor.style.transform = 'rotateY(0)';
+            }
+        });
+    </script>
+</body>
+</html>

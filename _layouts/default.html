@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title }}</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/Better_Alist/alist.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">首页</a></li>
+      <li><a href="/about/">关于</a></li>
+      <li><a href="/blog/">blog</a></li>
+      <li><a href="/tool/">工具</a></li>
+      <li><a href="/gallery/">相册</a></li>
+      <li><a href="https://space.bilibili.com/3546558098311230" target="_blank" rel="noopener noreferrer">联系我们</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    {{ content }}
+  </main>
+
+  <!-- 公共脚本（顺序按需调整） -->
+  <script src="/Better_Alist/jq.js"></script>
+  <script src="/Better_Alist/js/lib.js"></script>
+  <script src="/Better_Alist/js/parallax.min.js"></script>
+  <script src="/Better_Alist/js/app.bundle.js"></script>
+
+  <!-- 全站统一启用游鱼动画的 loader -->
+  <script src="/Better_Alist/fish-loader.js"></script>
+</body>
+</html>
